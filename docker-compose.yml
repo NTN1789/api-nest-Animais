@@ -1,0 +1,9 @@
+version: '3.7'
+services:
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: testepets
+      MYSQL_DATABASE: projectPet
+    ports:
+      - "3306:3306"
