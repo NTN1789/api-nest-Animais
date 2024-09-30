@@ -5,9 +5,18 @@
 
 ## Installation
 
+
 ```bash
 $ npm install
 ```
+ depois de baixar  o projeto  baixar o docker na máquina ou usar o mysql puro mesmo para usar o banco de dados 
+
+
+```bash
+$ docker-compose up -d 
+```
+vai baixar uma imagem do mysql 8 e vai criar o banco de dados e não precisar executar o typeorm , só executar ele para criar novas colunas na aplicação ou para criar outras tabelas com as migrations 
+
 
 ## Running the app
 
