@@ -67,19 +67,31 @@ export class  AnimalService{
        
                 }
 
-     
 
-        async show(id:number){
-                await this.exists(id);
-
-        return await this.animalRepository.findOneBy({     
-                                id : id      
-                     });     
-                }
+                      async show(id: number) {
+                      
+                        if (isNaN(id) || id <= 0) {
+                          throw new BadRequestException(`ID inválido: ${id}`);
+                        }
+                      
+                    
+                        const animal = await this.animalRepository.findOneBy({ id });
+                      
+                        if (!animal) {
+                          throw new NotFoundException(`Animal com ID ${id} não encontrado`);
+                        }
+                      
+                        return animal;
+                      }
+                      
+                  
+        
 
         async update(id:number , {nome,comportamento,habitat,idade,peso,status,dieta,observacao}:UpdatePutAnimalDto){
             
-            await this.exists(id);
+                if (isNaN(id) || id <= 0) {
+                        throw new BadRequestException(`ID inválido: ${id}`);
+                      }
       
               await  this.animalRepository.update(id,{
                                 nome,
@@ -97,7 +109,9 @@ export class  AnimalService{
 
         async updateAndPatch(id:number , {nome,comportamento,habitat,idade,peso,status,dieta,observacao}:UpdatePatchAnimalDto){
         
-             await this.exists(id);
+                if (isNaN(id) || id <= 0) {
+                        throw new BadRequestException(`ID inválido: ${id}`);
+                      }
                 const data: any = {};
 
         
@@ -151,34 +165,30 @@ if (observacao) {
                 });
                 return this.show(id);
         }
-     async delete (id:number){
-        await this.exists(id);
-   
-        
-
- await this.animalRepository.delete(id);
-     
-        return true;
-
-}     
-
-     
-     async exists(id: number) {
-
-
-     
-
-        if (!(await  this.animalRepository.exists({
-            where: {
-                id,
-            },
-        }))) {
-            throw new NotFoundException(`O animal ${id} não existe.`);
-        
-          }
    
    
-        }
+        async delete(id: number) {
+              
+                if (isNaN(id) || id <= 0) {
+                  throw new BadRequestException(`ID inválido: ${id}`);
+                }
+              
+            
+                const result = await this.animalRepository.delete(id);
+              
+          
+                if (result.affected === 0) {
+                  throw new NotFoundException(`Animal com ID ${id} não encontrado para exclusão`);
+                }
+              
+                return { success: true, message: `Animal com ID ${id} deletado com sucesso` };
+              }    
+
+
+
+
+     
+
      
   
 
